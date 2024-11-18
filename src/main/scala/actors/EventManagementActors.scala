@@ -3,69 +3,85 @@ package actors
 import akka.actor.{Actor, ActorRef}
 import constants.EventManagementMsgReceivers
 import models.KafkaMessageFormat
-
-import java.io.{BufferedWriter, File, FileWriter}
+import org.slf4j.LoggerFactory
+import utils.EmailUtils
 
 class EventManagementFileWriterActor() extends Actor {
-  private val baseDir = "src/main/scala/messages/eventManagement"
-
-  def ensureFileExists(fileName: String): File = {
-    val file = new File(fileName)
-    file.getParentFile.mkdirs() // Ensure directories exist
-    if (!file.exists()) file.createNewFile()
-    file
-  }
+//  private val baseDir = "src/main/scala/messages/eventManagement"
+//
+//  def ensureFileExists(fileName: String): File = {
+//    val file = new File(fileName)
+//    file.getParentFile.mkdirs() // Ensure directories exist
+//    if (!file.exists()) file.createNewFile()
+//    file
+//  }
 
   def receive: Receive = {
     case (fileName: String, messageType: String, message: String) =>
-      val file = ensureFileExists(fileName) // Dynamically ensure file exists
-      val bw = new BufferedWriter(new FileWriter(file, true))
-      try {
-        bw.write(s"$messageType :: $message")
-        bw.newLine()
-        bw.flush()
-      } finally {
-        bw.close() // Ensure resources are released
-      }
+//      val file = ensureFileExists(fileName) // Dynamically ensure file exists
+//      val bw = new BufferedWriter(new FileWriter(file, true))
+//      try {
+//        bw.write(s"$messageType :: $message")
+//        bw.newLine()
+//        bw.flush()
+//      } finally {
+//        bw.close() // Ensure resources are released
+//      }
+      EmailUtils.sendEmail("muthojusaketh55@gmail.com", messageType, message)
   }
 }
 
 class CateringMessageListener(fileWriterActor: ActorRef) extends Actor {
+  private val logger = LoggerFactory.getLogger("CateringMessageLogger")
+
   override def receive: Receive = {
     case msg: KafkaMessageFormat =>
       println("Catering Message Listener consumes the message")
+      logger.info(s"${msg.messageType} :: ${msg.message}")
       fileWriterActor ! ("src/main/scala/messages/eventManagement/catering.txt", msg.messageType, msg.message)
   }
 }
 
 class EntertainmentMessageListener(fileWriterActor: ActorRef) extends Actor {
+  private val logger = LoggerFactory.getLogger("EntertainmentMessageLogger")
+
   override def receive: Receive = {
     case msg: KafkaMessageFormat =>
       println("Entertainment Message Listener consumes the message")
+      logger.info(s"${msg.messageType} :: ${msg.message}")
       fileWriterActor ! ("src/main/scala/messages/eventManagement/entertainment.txt", msg.messageType, msg.message)
   }
 }
 
 class DecorationMessageListener(fileWriterActor: ActorRef) extends Actor {
+  private val logger = LoggerFactory.getLogger("DecorationMessageLogger")
+
   override def receive: Receive = {
     case msg: KafkaMessageFormat =>
       println("Decoration Message Listener consumes the message")
+      logger.info(s"${msg.messageType} :: ${msg.message}")
       fileWriterActor ! ("src/main/scala/messages/eventManagement/decoration.txt", msg.messageType, msg.message)
   }
 }
 
 class LogisticsMessageListener(fileWriterActor: ActorRef) extends Actor {
+  private val logger = LoggerFactory.getLogger("LogisticsMessageLogger")
+
   override def receive: Receive = {
     case msg: KafkaMessageFormat =>
       println("Logistics Message Listener consumes the message")
+      logger.info(s"${msg.messageType} :: ${msg.message}")
       fileWriterActor ! ("src/main/scala/messages/eventManagement/logistics.txt", msg.messageType, msg.message)
   }
 }
 
 class ManagerMessageListener(fileWriterActor: ActorRef) extends Actor {
+  private val logger = LoggerFactory.getLogger("ManagerMessageLogger")
+
   override def receive: Receive = {
     case msg: KafkaMessageFormat =>
       println("Manager Message Listener consumes the message")
+      logger.info(s"${msg.messageType} :: ${msg.message}")
       fileWriterActor ! ("src/main/scala/messages/eventManagement/manager.txt", msg.messageType, msg.message)
   }
 }
