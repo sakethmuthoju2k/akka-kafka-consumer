@@ -1,3 +1,5 @@
+package models
+
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat3}
 import spray.json.RootJsonFormat
 
@@ -9,6 +11,5 @@ case class KafkaMessageFormat(
 
 object JsonFormats {
   implicit val kafkaMessageFormat: RootJsonFormat[KafkaMessageFormat] = jsonFormat3(KafkaMessageFormat)
-
 }
 
