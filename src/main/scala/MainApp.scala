@@ -1,4 +1,4 @@
-import akka.actor.{ActorRef, ActorSystem, Props}
+import akka.actor.ActorSystem
 import utils.KafkaConsumer
 
 object MainApp extends App {

@@ -11,6 +11,7 @@ import spray.json._
 import constants.MessageTopics
 import actors._
 import akka.stream.{ActorMaterializer, Materializer}
+import config.EnvConfig
 import models.JsonFormats.kafkaMessageFormat
 
 object KafkaConsumer {
@@ -18,7 +19,7 @@ object KafkaConsumer {
     implicit val materializer: Materializer = ActorMaterializer()(system)
 
     val consumerSettings = ConsumerSettings(system, new StringDeserializer, new StringDeserializer)
-      .withBootstrapServers("localhost:9092")
+      .withBootstrapServers(EnvConfig.getKafkaBroker)
       .withGroupId("group1")
       .withProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest")
 

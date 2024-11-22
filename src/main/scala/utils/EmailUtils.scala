@@ -1,7 +1,6 @@
 package utils
 
 import config.EnvConfig
-
 import java.util.Properties
 import javax.mail._
 import javax.mail.internet._
