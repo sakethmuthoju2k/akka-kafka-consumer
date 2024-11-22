@@ -1,21 +1,23 @@
 package utils
 
+import config.EnvConfig
+
 import java.util.Properties
 import javax.mail._
 import javax.mail.internet._
 import javax.mail.internet.InternetAddress
 
 object Settings {
-  val password = "***************"
+  val password = EnvConfig.getEmailUtilsPassword
 }
 
 object EmailUtils {
   // Email configuration
-  val smtpHost = "smtp.gmail.com" // SMTP server
-  val smtpPort = "587" // SMTP port (use 465 for SSL, 587 for TLS)
-  val senderEmail = "muthojusaketh007@gmail.com" // Sender's email
-  val senderName = "Kafka Consumer" // Sender's display name
-  val senderPassword = Settings.password // Sender's email password
+  val smtpHost = EnvConfig.getSMPTHost
+  val smtpPort = EnvConfig.getSMPTPort
+  val senderEmail = EnvConfig.getEmailSender
+  val senderName = "Kafka Consumer"
+  val senderPassword = Settings.password
 
   def sendEmail(toEmail: String, subject: String, body: String): Unit = {
     val properties = new Properties()

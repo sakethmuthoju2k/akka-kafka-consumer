@@ -1,33 +1,16 @@
 package actors
 
 import akka.actor.{Actor, ActorRef}
+import config.EnvConfig
 import constants.EventManagementMsgReceivers
 import models.KafkaMessageFormat
 import org.slf4j.LoggerFactory
 import utils.EmailUtils
 
 class EventManagementFileWriterActor() extends Actor {
-//  private val baseDir = "src/main/scala/messages/eventManagement"
-//
-//  def ensureFileExists(fileName: String): File = {
-//    val file = new File(fileName)
-//    file.getParentFile.mkdirs() // Ensure directories exist
-//    if (!file.exists()) file.createNewFile()
-//    file
-//  }
-
   def receive: Receive = {
     case (fileName: String, messageType: String, message: String) =>
-//      val file = ensureFileExists(fileName) // Dynamically ensure file exists
-//      val bw = new BufferedWriter(new FileWriter(file, true))
-//      try {
-//        bw.write(s"$messageType :: $message")
-//        bw.newLine()
-//        bw.flush()
-//      } finally {
-//        bw.close() // Ensure resources are released
-//      }
-      EmailUtils.sendEmail("muthojusaketh55@gmail.com", messageType, message)
+      EmailUtils.sendEmail(EnvConfig.getEmailRecipient, messageType, message)
   }
 }
 

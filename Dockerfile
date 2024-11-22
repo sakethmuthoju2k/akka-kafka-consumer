@@ -13,6 +13,9 @@ WORKDIR /app
 # Copy the project files
 COPY . .
 
+# Copy the .env file to the container
+COPY .env /app/.env
+
 # Pre-fetch dependencies to speed up builds
 RUN sbt update
 

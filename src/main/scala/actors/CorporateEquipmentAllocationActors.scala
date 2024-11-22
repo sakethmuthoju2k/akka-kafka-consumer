@@ -1,21 +1,16 @@
 package actors
 
 import akka.actor.{Actor, ActorRef}
+import config.EnvConfig
 import models.KafkaMessageFormat
 import org.slf4j.LoggerFactory
 import constants.CorporateEquipmentAllocationMsgReceivers
 import utils.EmailUtils
 
-import java.io.{BufferedWriter, FileWriter}
-
 class CorporateEqpAllocationFileWriterActor() extends Actor {
   def receive: Receive = {
     case (fileName: String, messageType: String, message: String) =>
-//      val bw = new BufferedWriter(new FileWriter(fileName, true))
-//      bw.write(s"$messageType :: $message\n")
-//      bw.newLine()
-//      bw.close()
-      EmailUtils.sendEmail("muthojusaketh55@gmail.com", messageType, message)
+      EmailUtils.sendEmail(EnvConfig.getEmailRecipient, messageType, message)
   }
 }
 
